@@ -300,6 +300,7 @@ class BetterCommentsPlugin extends Plugin
         $input = array();
         $input['name'] = isset($_POST['data']['name']) ? filter_var($_POST['data']['name'], FILTER_UNSAFE_RAW) : null;
         $input['email'] = isset($_POST['data']['email']) ? filter_var($_POST['data']['email'], FILTER_UNSAFE_RAW) : null;
+        $input['website'] = isset($_POST['data']['website']) ? filter_var($_POST['data']['website'], FILTER_UNSAFE_RAW) : null;
         $input['text'] = isset($_POST['data']['text']) ? filter_var($_POST['data']['text'], FILTER_UNSAFE_RAW) : null;
         $input['title'] = isset($_POST['data']['title']) ? filter_var($_POST['data']['title'], FILTER_UNSAFE_RAW) : null;
         $input['lang'] = isset($_POST['data']['lang']) ? filter_var($_POST['data']['lang'], FILTER_UNSAFE_RAW) : null;
@@ -329,6 +330,7 @@ class BetterCommentsPlugin extends Plugin
 
         $input['name'] = trim($input['name']);
         $input['email'] = trim($input['email']);
+        $input['website'] = trim($input['website']);
         $input['text'] = trim($input['text']);
         $form_errors = [];
 
@@ -340,6 +342,10 @@ class BetterCommentsPlugin extends Plugin
             array_push($form_errors, $language->translate('PLUGIN_COMMENTS.ERROR_MAIL'));
         }
 
+        if (empty($input['website'])) {
+            array_push($form_errors, $language->translate('PLUGIN_COMMENTS.ERROR_WEBSITE'));
+        }
+
         if (empty($input['text'])) {
             array_push($form_errors, $language->translate('PLUGIN_COMMENTS.ERROR_TEXT'));
         }
@@ -349,21 +355,21 @@ class BetterCommentsPlugin extends Plugin
         }
         $time = time();
 
-        $this->addComment($input['name'], $input['email'], nl2br($input['text']), $input['answer'], $input['title'], $input['lang'], $time, $input['path']);
+        $this->addComment($input['name'], $input['email'], $input['website'], nl2br($input['text']), $input['answer'], $input['title'], $input['lang'], $time, $input['path']);
 
         $comment_data = [];
         $texts = [];
 
         if ($this->grav['user']->authorize('admin.super') && $this->grav['uri']->path() === '/admin/bettercomments') {
             //Admin return
-            $comment_data = [$input['name'], $input['email'], $input['text'], $input['title'], $time];
+            $comment_data = [$input['name'], $input['email'], $input['website'], $input['text'], $input['title'], $time];
             $texts = [$language->translate('PLUGIN_COMMENTS.VISIBLE'), $language->translate('PLUGIN_COMMENTS.STATUS_ANSWER'), $language->translate('PLUGIN_COMMENTS.DECLINE'), $language->translate('PLUGIN_COMMENTS.DELETE'), $language->translate('PLUGIN_COMMENTS.PAGE'), $language->translate('PLUGIN_COMMENTS.DATE')];
         }
 
         return [true, '', $comment_data, $texts];
     }
 
-    public function addComment($name, $email, $text, $answer, $title, $lang, $time, $path)
+    public function addComment($name, $email, $website, $text, $answer, $title, $lang, $time, $path)
     {
         if (!$this->active) {
             return;
@@ -392,6 +398,7 @@ class BetterCommentsPlugin extends Plugin
                 'date' => $time,
                 'author' => $name,
                 'email' => $email,
+                'website' => $website,
                 'approved' => $approved,
                 'answer' => (int)$answer
             ];
@@ -404,6 +411,7 @@ class BetterCommentsPlugin extends Plugin
                     'date' => $time,
                     'author' => $name,
                     'email' => $email,
+                    'website' => $website,
                     'approved' => $approved,
                     'answer' => (int)$answer
                 ])
