@@ -13,6 +13,8 @@ en:
     NAME_PLACEHOLDER: "Enter your name"
     EMAIL_LABEL: "Email"
     EMAIL_PLACEHOLDER: "Enter your email address"
+    WEBSITE_LABEL: "Website"
+    WEBSITE_PLACEHOLDER: "Enter your website address"
     MESSAGE_LABEL: "Comment"
     MESSAGE_PLACEHOLDER: "Enter your comment"
     SUBMIT_COMMENT_BUTTON_TEXT: "Submit"
@@ -36,6 +38,7 @@ en:
     SAYS: Says
     ERROR_NAME: Fill the "name" field
     ERROR_MAIL: Fill the "email" field
+    ERROR_WEBSITE: Fill the "website" field
     ERROR_TEXT: Fill the "comment" field
     ERROR_RECAPTACH: Complete recaptcha
     ERROR_MISSING_DATA: Missing data
