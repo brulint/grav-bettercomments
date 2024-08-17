@@ -26,6 +26,13 @@ form:
           validate:
             required: true
 
+        - name: website
+          label: PLUGIN_COMMENTS.WEBSITE_LABEL
+          placeholder: PLUGIN_COMMENTS.WEBSITE_PLACEHOLDER
+          type: text
+          validate:
+            required: false
+
         - name: text
           label: PLUGIN_COMMENTS.MESSAGE_LABEL
           placeholder: PLUGIN_COMMENTS.MESSAGE_PLACEHOLDER
